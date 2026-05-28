@@ -1,11 +1,11 @@
 module TOGBroadcastBrowser
 
 using HTTP, URIs, Sockets
-using LoopOS: BatchProcessor, start!, OutputPeripheral
+using LoopOS: BatchProcessor, start!, Peripheral
 import Base.put!
 
 "Serve and execute JavaScript on an HTTP client using SSE"
-struct BroadcastBrowser <: OutputPeripheral
+struct BroadcastBrowser <: Peripheral
     stream::HTTP.Streams.Stream
     width::Int
     height::Int

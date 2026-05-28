@@ -1,6 +1,6 @@
 name = "TOGBroadcastBrowser"
 uuid = "cb78168c-aa21-4c29-bdc5-51c3172deeca"
-version = "1.0.0"
+version = "2.0.0"
 authors = ["1m1 <imi@1m1.io>"]
 
 [deps]
