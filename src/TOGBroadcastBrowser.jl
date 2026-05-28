@@ -6,7 +6,7 @@ import Base.put!
 
 "Serve and execute JavaScript on an HTTP client using SSE"
 struct BroadcastBrowser <: Peripheral
-    stream::HTTP.Streams.Stream
+    stream::HTTP.Stream
     width::Int
     height::Int
     processor::BatchProcessor{String}
