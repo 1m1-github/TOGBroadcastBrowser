@@ -57,14 +57,14 @@ function handle_sse(a)
     end
 end
 
-function freeport(hint)
+function openport(hint)
     port, server = listenany(hint)
     close(server)
     Int(port)
 end
 
-function start(root::Function, keypress::Function, port=freeport(8888))
-    HTTP.serve("0.0.0.0", port; stream=true) do stream
+function awaken(;root::Function, keypress::Function, port=openport(8888))
+    @async HTTP.serve("0.0.0.0", port; stream=true) do stream
         target = stream.message.target
         if target == "/"
             HTTP.setstatus(stream, 200)
