@@ -12,9 +12,11 @@ struct BroadcastBrowser <: Peripheral
     processor::BatchProcessor{String}
     BroadcastBrowser(stream, width, height) = new(stream, width, height, BatchProcessor{String}())
 end
-const CLIENTS = Ref(Set{BroadcastBrowser}())
+const BROADCASTBROWSER = Ref{BroadcastBrowser}()
+# const CLIENTS = Ref(Set{BroadcastBrowser}())
 "`put!(BroadcastBrowser, js)` runs the js on all connected browsers"
-put!(::Type{BroadcastBrowser}, js) = [put!(client.processor, js) for client = CLIENTS[]]
+# put!(::Type{BroadcastBrowser}, js) = [put!(client.processor, js) for client = CLIENTS[]]
+put!(::Type{BroadcastBrowser}, js) = put!(BROADCASTBROWSER[].processor, js)
 
 const HTML = raw"""
 <!DOCTYPE html>
@@ -75,11 +77,11 @@ function awaken(;root::Function, keypress::Function, port=openport(8888))
             params = queryparams(uri)
             width = parse(Int, params["width"])
             height = parse(Int, params["height"])
-            bb = BroadcastBrowser(stream, width, height)
-            push!(CLIENTS[], bb)
-            root(port, bb)
-            handle_sse(bb)
-            delete!(CLIENTS[], bb)
+            BROADCASTBROWSER[] = BroadcastBrowser(stream, width, height)
+            # push!(CLIENTS[], bb)
+            root(port, BROADCASTBROWSER[])
+            handle_sse(BROADCASTBROWSER[])
+            # delete!(CLIENTS[], bb)
         elseif uri.path == "/keypress"
             keypress(String(read(stream)))
             HTTP.setstatus(stream, 204)
